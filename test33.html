@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        input, button {
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            align: center;
+        }
+    </style>
+</head>
+<body>
+    <div align="center">
+        <h1>Grade Calculator</h1>  
+        <button onclick="addActivity()" id="addActivity">Add Activity</button>
+        <label for="activity">Activity</label>
+        <input type="text" id="activity" size="3">
+        <label for="Weight">Weight</label>
+        <input type="text" id="Weight" size="3"><br>    
+        <button onclick="addGrade()" id="addGrade">Add Grade</button>
+        <label for="grade">Grade</label>
+        <input type="text" id="grade" size="3">
+        <label for="activityNo">Activity no</label>
+        <input type="text" id="activityNo" size="3"><br>        
+        <button onclick="deleteActivity()" id="deleteActivity">Delete Activity</button>    
+        <table border="2" id="theTable" style="width:70%">
+            <tr>
+                <th>No</th>
+                <th>Activity</th>
+                <th>Weight</th>
+                <th>Grade</th>
+            </tr>  
+            <tr>
+                <td>1</td>
+                <td>Lab1</td>
+                <td>10</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Lab2</td>
+                <td>20</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Test1</td>
+                <td>30</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Test2</td>
+                <td>40</td>
+                <td></td>
+            </tr>
+        </table>
+        <p id="ERR" style="color:red;">Error Message: </p>
+    </div>
+    <script>
+        let noActivity = 4;
+        let totalWeight = 100;
+        const ERR = document.getElementById("ERR");
+
+        function addActivity() {
+            const activity = document.getElementById("activity").value;
+            const weight = document.getElementById("Weight").value;
+
+            if (!activity) {
+                ERR.textContent = "Error Message: Activity name is rejected.";
+                return;
+            }
+
+            const weightValue = parseInt(weight);
+            if (!weight || weightValue < 1 || weightValue > 100) {
+                ERR.textContent = "Error Message: Weight is rejected.";
+                return;
+            }
+
+            noActivity++;
+            const table = document.getElementById("theTable");
+            const row = table.insertRow();
+            row.insertCell(0).textContent = noActivity;
+            row.insertCell(1).textContent = activity;
+            row.insertCell(2).textContent = weight;
+            row.insertCell(3).textContent = "";
+
+            document.getElementById("activity").value = "";
+            document.getElementById("Weight").value = "";
+            ERR.textContent = "";
+        }
+
+        function deleteActivity() {
+            if (noActivity === 0) {
+                ERR.textContent = "Error Message: No more activities to remove.";
+                return;
+            }
+
+            const table = document.getElementById("theTable");
+            table.deleteRow(noActivity);
+            noActivity--;
+            ERR.textContent = "";
+        }
+
+        function addGrade() {
+            const grade = document.getElementById("grade").value;
+            const activityNo = document.getElementById("activityNo").value;
+
+            const gradeValue = parseInt(grade);
+            if (!grade || gradeValue < 0 || gradeValue > 100) {
+                ERR.textContent = "Error Message: Grade is rejected.";
+                return;
+            }
+
+            const activityIndex = parseInt(activityNo);
+            if (activityIndex < 1 || activityIndex > noActivity) {
+                ERR.textContent = "Error Message: Activity No is rejected.";
+                return;
+            }
+
+            const table = document.getElementById("theTable");
+            table.rows[activityIndex].cells[3].textContent = grade;
+
+            document.getElementById("grade").value = "";
+            document.getElementById("activityNo").value = "";
+            ERR.textContent = "";
+        }
+    </script>
+</body>
+</html>
